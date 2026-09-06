@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.mediclinic.controllers.PatientsViewController"
+      spacing="16.0"
+      styleClass="main-container">
+
+    <!-- Top Action & Search Bar -->
+    <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="card" style="-fx-padding: 12px 18px;">
+        <Label text="🔍" style="-fx-font-size: 16px;" />
+        <TextField fx:id="txtSearch" promptText="Buscar paciente por Cédula, Nombres, Apellidos o N° de Historia..." HBox.hgrow="ALWAYS" />
+        <Button text="❌" onAction="#handleClearSearch" styleClass="btn-secondary" style="-fx-padding: 6px 10px;" />
+        <Separator orientation="VERTICAL" />
+        <Button text="➕ Registrar Nuevo Paciente" onAction="#openNewPatientForm" styleClass="btn-primary" />
+    </HBox>
+
+    <!-- Main Content Area: Table + Selected Patient Details -->
+    <HBox spacing="16.0" VBox.vgrow="ALWAYS">
+        <!-- Patients Table -->
+        <VBox spacing="8.0" HBox.hgrow="ALWAYS" styleClass="card" style="-fx-padding: 14px;">
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Directorio de Pacientes" styleClass="section-title" style="-fx-font-size: 15px;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblTotalCount" text="Cargando pacientes..." style="-fx-font-size: 11px; -fx-text-fill: #64748b; -fx-font-weight: 600;" />
+            </HBox>
+
+            <TableView fx:id="tablePatients" VBox.vgrow="ALWAYS" styleClass="custom-table">
+                <columns>
+                    <TableColumn fx:id="colHistoryNumber" text="N° Historia" prefWidth="110.0" />
+                    <TableColumn fx:id="colIdCard" text="Cédula" prefWidth="110.0" />
+                    <TableColumn fx:id="colFullName" text="Nombre Completo" prefWidth="180.0" />
+                    <TableColumn fx:id="colOrigin" text="Origen" prefWidth="140.0" />
+                    <TableColumn fx:id="colPhone" text="Teléfono" prefWidth="120.0" />
+                    <TableColumn fx:id="colBirthDate" text="Fecha Nac. (Edad)" prefWidth="140.0" />
+                    <TableColumn fx:id="colActions" text="Acciones" prefWidth="90.0" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+        </VBox>
+
+        <!-- Selected Patient Detail Side Card -->
+        <VBox fx:id="patientDetailsCard" prefWidth="320.0" minWidth="300.0" spacing="14.0" styleClass="card" style="-fx-padding: 18px;">
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <VBox alignment="CENTER" style="-fx-background-color: #e0f2fe; -fx-background-radius: 50px; -fx-min-width: 44px; -fx-min-height: 44px;">
+                    <Label text="👤" style="-fx-font-size: 20px;" />
+                </VBox>
+                <VBox spacing="2.0">
+                    <Label fx:id="lblDetailName" text="Nombre del Paciente" style="-fx-font-weight: 800; -fx-font-size: 14px; -fx-text-fill: #0f172a;" wrapText="true" />
+                    <Label fx:id="lblDetailHistory" text="HC-2026-0001" style="-fx-font-size: 11px; -fx-text-fill: #0ea5e9; -fx-font-weight: 700;" />
+                </VBox>
+            </HBox>
+
+            <Separator />
+
+            <VBox spacing="8.0">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Identificación:" styleClass="field-label" prefWidth="100.0" />
+                    <Label fx:id="lblDetailIdCard" text="V-18456789" style="-fx-font-weight: 700; -fx-text-fill: #1e293b;" />
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Condición:" styleClass="field-label" prefWidth="100.0" />
+                    <Label fx:id="lblDetailOrigin" text="🏠 Local" />
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Teléfono:" styleClass="field-label" prefWidth="100.0" />
+                    <Label fx:id="lblDetailPhone" text="0412-1234567" style="-fx-text-fill: #334155;" />
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Email:" styleClass="field-label" prefWidth="100.0" />
+                    <Label fx:id="lblDetailEmail" text="correo@email.com" style="-fx-text-fill: #334155;" />
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Edad:" styleClass="field-label" prefWidth="100.0" />
+                    <Label fx:id="lblDetailAge" text="35 años" style="-fx-text-fill: #334155;" />
+                </HBox>
+
+                <VBox spacing="4.0" style="-fx-padding: 4px 0 0 0;">
+                    <Label text="Dirección:" styleClass="field-label" />
+                    <Label fx:id="lblDetailAddress" text="Urb. Pirineos, San Cristóbal" wrapText="true" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                </VBox>
+            </VBox>
+
+            <Separator />
+
+            <VBox spacing="8.0">
+                <Label text="Acciones Rápidas" style="-fx-font-size: 11px; -fx-font-weight: 700; -fx-text-fill: #94a3b8;" />
+                <Button fx:id="btnStartClinical" text="📋 Iniciar Consulta / Historia" onAction="#handleOpenClinicalHistory" maxWidth="Infinity" styleClass="btn-primary" style="-fx-font-size: 12px; -fx-padding: 7px;" />
+                <Button fx:id="btnQuoteProcedure" text="💰 Cotizar Procedimiento" onAction="#handleOpenProcedureQuote" maxWidth="Infinity" styleClass="btn-secondary" style="-fx-font-size: 12px; -fx-padding: 7px;" />
+                <Button fx:id="btnDeletePatient" text="🗑️ Eliminar Paciente" onAction="#handleDeletePatient" maxWidth="Infinity" styleClass="btn-danger" style="-fx-font-size: 12px; -fx-padding: 7px;" />
+            </VBox>
+        </VBox>
+    </HBox>
+
+</VBox>

@@ -1,0 +1,583 @@
+/* ==========================================================================
+   MEDICLINIC PRO - QUIET LUXURY & GLASSMORPHISM THEME (style.css)
+   Ultra-Clean, Minimalist, Serene Color Palette & Refined Typography
+   ========================================================================== */
+
+/* Root & Global Typography */
+.root {
+    -fx-font-family: 'Segoe UI', 'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f8fafc;
+    
+    /* Quiet Luxury Palette Tokens */
+    -fx-primary: #0284c7;
+    -fx-primary-dark: #0369a1;
+    -fx-primary-light: #e0f2fe;
+    -fx-secondary: #0f766e;
+    -fx-accent: #6366f1;
+    -fx-success: #059669;
+    -fx-warning: #d97706;
+    -fx-danger: #e11d48;
+    -fx-text-main: #0f172a;
+    -fx-text-muted: #64748b;
+    -fx-bg-card: rgba(255, 255, 255, 0.95);
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+}
+
+/* Base Containers */
+.main-container {
+    -fx-background-color: #f8fafc;
+}
+
+.login-background {
+    -fx-background-color: linear-gradient(to bottom right, #090d16, #0f172a, #134e4a);
+}
+
+.login-card {
+    -fx-background-color: rgba(255, 255, 255, 0.96);
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 30, 0, 0, 10);
+    -fx-padding: 38px 44px;
+}
+
+/* Glassmorphism & Quiet Luxury Cards */
+.card {
+    -fx-background-color: rgba(255, 255, 255, 0.94);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.04), 12, 0, 0, 3);
+    -fx-padding: 18px 22px;
+}
+
+.stat-card {
+    -fx-background-color: rgba(255, 255, 255, 0.96);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.05), 14, 0, 0, 4);
+    -fx-padding: 18px 22px;
+}
+
+.stat-card:hover {
+    -fx-border-color: rgba(2, 132, 199, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.12), 16, 0, 0, 5);
+}
+
+/* Headers & Labels */
+.app-title {
+    -fx-font-size: 23px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0284c7;
+    -fx-letter-spacing: -0.5px;
+}
+
+.section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-letter-spacing: -0.3px;
+}
+
+.greeting-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-letter-spacing: -0.4px;
+}
+
+.greeting-sublabel {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
+    -fx-font-weight: 500;
+}
+
+.badge-role-doctor {
+    -fx-background-color: rgba(224, 242, 254, 0.9);
+    -fx-text-fill: #0369a1;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(186, 230, 253, 0.8);
+    -fx-border-radius: 20px;
+    -fx-padding: 4px 12px;
+}
+
+.badge-role-secretary {
+    -fx-background-color: rgba(237, 233, 254, 0.9);
+    -fx-text-fill: #5b21b6;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(221, 214, 254, 0.8);
+    -fx-border-radius: 20px;
+    -fx-padding: 4px 12px;
+}
+
+/* Form Controls & Inputs */
+.text-field, .password-field, .text-area, .combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #0f172a;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: #0284c7;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.22), 8, 0, 0, 0);
+}
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #334155;
+}
+
+/* Radio Buttons */
+.radio-button {
+    -fx-font-size: 13px;
+    -fx-text-fill: #334155;
+    -fx-cursor: hand;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #0284c7;
+}
+
+/* Redesigned Quiet Luxury Buttons */
+.btn-primary {
+    -fx-background-color: linear-gradient(to bottom right, #0284c7, #0369a1);
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-padding: 9px 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.28), 8, 0, 0, 2);
+}
+
+.btn-primary:hover {
+    -fx-background-color: linear-gradient(to bottom right, #0369a1, #075985);
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.40), 12, 0, 0, 3);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #075985;
+}
+
+.btn-secondary {
+    -fx-background-color: rgba(241, 245, 249, 0.95);
+    -fx-border-color: rgba(203, 213, 225, 0.85);
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #334155;
+    -fx-font-weight: 600;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #0f172a;
+    -fx-border-color: #94a3b8;
+}
+
+.btn-secondary:pressed {
+    -fx-background-color: #cbd5e1;
+}
+
+.btn-danger {
+    -fx-background-color: linear-gradient(to bottom right, #e11d48, #be123c);
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 700;
+    -fx-font-size: 12px;
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(225, 29, 72, 0.25), 8, 0, 0, 2);
+}
+
+.btn-danger:hover {
+    -fx-background-color: linear-gradient(to bottom right, #be123c, #9f1239);
+    -fx-effect: dropshadow(gaussian, rgba(225, 29, 72, 0.38), 12, 0, 0, 3);
+}
+
+.btn-danger:pressed {
+    -fx-background-color: #9f1239;
+}
+
+.btn-success {
+    -fx-background-color: linear-gradient(to bottom right, #059669, #047857);
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 700;
+    -fx-font-size: 12px;
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.25), 8, 0, 0, 2);
+}
+
+.btn-success:hover {
+    -fx-background-color: linear-gradient(to bottom right, #047857, #065f46);
+    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.38), 12, 0, 0, 3);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    -fx-background-color: rgba(255, 255, 255, 0.94);
+    -fx-padding: 16px 12px;
+}
+
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: rgba(241, 245, 249, 0.95);
+    -fx-text-fill: #0284c7;
+}
+
+.sidebar-btn.active {
+    -fx-background-color: linear-gradient(to right, rgba(224, 242, 254, 0.95), rgba(240, 249, 255, 0.65));
+    -fx-text-fill: #0369a1;
+    -fx-font-weight: 800;
+    -fx-border-color: #0284c7;
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-radius: 0;
+}
+
+/* Top Header Bar */
+.top-header {
+    -fx-background-color: rgba(255, 255, 255, 0.94);
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 14px 28px;
+}
+
+/* Currency Pill */
+.currency-pill {
+    -fx-background-color: rgba(248, 250, 252, 0.9);
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 14px;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #475569;
+}
+
+/* Feedback Messages */
+.error-message {
+    -fx-text-fill: #e11d48;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* Calendar Card Component */
+.calendar-card {
+    -fx-background-color: rgba(248, 250, 252, 0.9);
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+}
+
+.calendar-card .date-picker-popup {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+}
+
+.calendar-card .calendar-grid {
+    -fx-background-color: transparent;
+}
+
+.calendar-card .day-cell {
+    -fx-font-size: 11px;
+    -fx-padding: 3px 5px;
+    -fx-background-radius: 6px;
+}
+
+.calendar-card .day-cell:hover {
+    -fx-background-color: #e0f2fe;
+    -fx-text-fill: #0284c7;
+}
+
+.calendar-card .day-cell:selected {
+    -fx-background-color: #0284c7;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+/* TableView Modern Styling */
+.custom-table {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.custom-table .column-header-background {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: rgba(226, 232, 240, 0.85);
+    -fx-border-width: 0 0 1px 0;
+}
+
+.custom-table .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: 800;
+    -fx-font-size: 11px;
+    -fx-text-fill: #475569;
+    -fx-padding: 10px 8px;
+}
+
+.custom-table .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #f8fafc;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 4px 2px;
+}
+
+.custom-table .table-row-cell:hover {
+    -fx-background-color: #f0fdf4;
+}
+
+.custom-table .table-row-cell:selected {
+    -fx-background-color: #e0f2fe;
+    -fx-text-fill: #0284c7;
+}
+
+/* ScrollPane Clean */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ==========================================================================
+   MULTI-CURRENCY LIVE CONVERTER & PROCEDURE STATUS STYLES
+   ========================================================================== */
+
+/* Currency Cards with Glass Effect */
+.currency-box-usd {
+    -fx-background-color: rgba(240, 253, 244, 0.9);
+    -fx-border-color: #86efac;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.08), 10, 0, 0, 2);
+}
+
+.currency-box-ves {
+    -fx-background-color: rgba(239, 246, 255, 0.9);
+    -fx-border-color: #93c5fd;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.08), 10, 0, 0, 2);
+}
+
+.currency-box-cop {
+    -fx-background-color: rgba(250, 245, 255, 0.9);
+    -fx-border-color: #d8b4fe;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(168, 85, 247, 0.08), 10, 0, 0, 2);
+}
+
+.currency-title {
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #475569;
+}
+
+.currency-value-usd {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #166534;
+}
+
+.currency-value-ves {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #1e40af;
+}
+
+.currency-value-cop {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #6b21a8;
+}
+
+.currency-rate-sub {
+    -fx-font-size: 10px;
+    -fx-text-fill: #64748b;
+    -fx-font-weight: 500;
+}
+
+/* Status Badges */
+.badge-status-quoted {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #fde68a;
+    -fx-border-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: center;
+}
+
+.badge-status-planned {
+    -fx-background-color: #e0e7ff;
+    -fx-text-fill: #3730a3;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #c7d2fe;
+    -fx-border-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: center;
+}
+
+.badge-status-completed {
+    -fx-background-color: #d1fae5;
+    -fx-text-fill: #065f46;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #a7f3d0;
+    -fx-border-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: center;
+}
+
+.badge-status-cancelled {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #fecdd3;
+    -fx-border-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: center;
+}
+
+/* Filter Chips / Filter Buttons */
+.filter-chip {
+    -fx-background-color: rgba(241, 245, 249, 0.9);
+    -fx-border-color: rgba(203, 213, 225, 0.8);
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-text-fill: #475569;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-padding: 6px 14px;
+    -fx-cursor: hand;
+}
+
+.filter-chip:hover {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #0f172a;
+}
+
+.filter-chip.active {
+    -fx-background-color: #0284c7;
+    -fx-border-color: #0369a1;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 800;
+}
+
+/* ==========================================================================
+   WhatsApp, Gmail, and PDF Action Buttons
+   ========================================================================== */
+.btn-whatsapp {
+    -fx-background-color: linear-gradient(to bottom right, #25D366, #128C7E);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 11.5px;
+    -fx-padding: 6px 14px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(37, 211, 102, 0.3), 8, 0, 0, 2);
+}
+.btn-whatsapp:hover {
+    -fx-background-color: linear-gradient(to bottom right, #20ba5a, #0e7569);
+    -fx-effect: dropshadow(gaussian, rgba(37, 211, 102, 0.5), 12, 0, 0, 4);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+.btn-gmail {
+    -fx-background-color: linear-gradient(to bottom right, #ea4335, #c5221f);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 11.5px;
+    -fx-padding: 6px 14px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(234, 67, 53, 0.3), 8, 0, 0, 2);
+}
+.btn-gmail:hover {
+    -fx-background-color: linear-gradient(to bottom right, #d93025, #b31412);
+    -fx-effect: dropshadow(gaussian, rgba(234, 67, 53, 0.5), 12, 0, 0, 4);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+.btn-pdf-action {
+    -fx-background-color: linear-gradient(to bottom right, #0284c7, #0369a1);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 11.5px;
+    -fx-padding: 6px 14px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.3), 8, 0, 0, 2);
+}
+.btn-pdf-action:hover {
+    -fx-background-color: linear-gradient(to bottom right, #0369a1, #075985);
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.5), 12, 0, 0, 4);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+/* Modern Clean Dialog Panes */
+.custom-alert-dialog {
+    -fx-background-color: #ffffff;
+    -fx-font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+.custom-alert-dialog > .header-panel {
+    -fx-background-color: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+    -fx-padding: 14px 18px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1px 0;
+}
+.custom-alert-dialog .label {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: #1e293b;
+}
+

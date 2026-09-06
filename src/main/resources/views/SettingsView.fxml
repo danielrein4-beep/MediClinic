@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.mediclinic.controllers.SettingsViewController"
+            fitToWidth="true"
+            style="-fx-background-color: transparent;"
+            styleClass="main-container">
+
+    <VBox spacing="16.0" style="-fx-padding: 6px 12px 24px 12px;">
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="card" style="-fx-padding: 12px 18px;">
+            <VBox spacing="2.0">
+                <Label text="⚙️ Configuración del Sistema &amp; Perfil" styleClass="section-title" style="-fx-font-size: 16px;" />
+                <Label text="Ajustes de apariencia (Modo Oscuro/Claro), tasas de cambio, datos institucionales y perfil" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblFeedback" text="" style="-fx-font-size: 12px; -fx-font-weight: bold;" />
+        </HBox>
+
+        <!-- Apariencia & Modo Oscuro Card -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="card" style="-fx-padding: 14px 20px; -fx-border-color: #38bdf8; -fx-border-width: 1px 1px 1px 4px;">
+            <VBox alignment="CENTER" style="-fx-background-color: #0284c7; -fx-background-radius: 50px; -fx-min-width: 44px; -fx-min-height: 44px;">
+                <Label text="🎨" style="-fx-font-size: 20px;" />
+            </VBox>
+            <VBox spacing="2.0">
+                <Label text="Tema Visual de la Aplicación" style="-fx-font-weight: 800; -fx-font-size: 14px;" />
+                <Label fx:id="lblCurrentThemeStatus" text="Modo Claro (Light Mode) Activo ☀️" style="-fx-font-size: 12px;" />
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnToggleTheme" text="🌙 Cambiar a Modo Oscuro" onAction="#handleToggleTheme" />
+        </HBox>
+
+        <GridPane hgap="16.0" vgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50.0" />
+                <ColumnConstraints percentWidth="50.0" />
+            </columnConstraints>
+
+            <!-- Card 1: Perfil de Usuario -->
+            <VBox spacing="12.0" styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label text="👤" style="-fx-font-size: 20px;" />
+                    <VBox spacing="2.0">
+                        <Label fx:id="lblUserFullName" text="Nombre del Usuario" style="-fx-font-weight: 800; -fx-font-size: 14px;" />
+                        <Label fx:id="lblUserRole" text="Rol: DOCTOR" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                    </VBox>
+                </HBox>
+
+                <Separator />
+
+                <VBox spacing="4.0">
+                    <Label text="Nombre Completo *" styleClass="field-label" />
+                    <TextField fx:id="txtUserName" promptText="Nombre y apellido" />
+                </VBox>
+
+                <VBox spacing="4.0">
+                    <Label text="Especialidad Médica / Cargo" styleClass="field-label" />
+                    <TextField fx:id="txtSpecialty" promptText="Ej. Medicina General y Cirugía" />
+                </VBox>
+
+                <VBox spacing="4.0">
+                    <Label text="Matrícula MPPS / Colegiado" styleClass="field-label" />
+                    <TextField fx:id="txtLicense" promptText="Ej. MPPS-84920 / Col. Médicos 14.502" />
+                </VBox>
+
+                <Separator />
+
+                <Label text="Cambiar Contraseña (Opcional)" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;" />
+
+                <HBox spacing="10.0">
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Nueva Contraseña" styleClass="field-label" />
+                        <PasswordField fx:id="txtNewPassword" promptText="Nueva clave..." />
+                    </VBox>
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Confirmar" styleClass="field-label" />
+                        <PasswordField fx:id="txtConfirmPassword" promptText="Repetir..." />
+                    </VBox>
+                </HBox>
+
+                <Button text="💾 Guardar Cambios de Perfil" onAction="#handleSaveProfile" maxWidth="Infinity" styleClass="btn-primary" style="-fx-padding: 8px;" />
+            </VBox>
+
+            <!-- Card 2: Tasas de Cambio & Monedas -->
+            <VBox spacing="12.0" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label text="💱" style="-fx-font-size: 20px;" />
+                    <VBox spacing="2.0">
+                        <Label text="Tasas de Cambio Oficiales" style="-fx-font-weight: 800; -fx-font-size: 14px;" />
+                        <Label text="Conversión automática en presupuestos y cobros" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                    </VBox>
+                </HBox>
+
+                <Separator />
+
+                <VBox spacing="8.0" styleClass="currency-box-ves">
+                    <Label text="🇻🇪 Tasa Bolívares (VES) por 1 USD ($)" styleClass="field-label" style="-fx-font-weight: bold;" />
+                    <TextField fx:id="txtTasaVes" promptText="Ej. 38.50" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    <Label text="Monto en Bs. que equivale a 1 Dólar Americano" style="-fx-font-size: 10px; -fx-text-fill: #64748b;" />
+                </VBox>
+
+                <VBox spacing="8.0" styleClass="currency-box-cop">
+                    <Label text="🇨🇴 Tasa Pesos Colombianos (COP) por 1 USD ($)" styleClass="field-label" style="-fx-font-weight: bold;" />
+                    <TextField fx:id="txtTasaCop" promptText="Ej. 4100" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    <Label text="Monto en Pesos COP que equivale a 1 Dólar Americano" style="-fx-font-size: 10px; -fx-text-fill: #64748b;" />
+                </VBox>
+
+                <Button text="💱 Actualizar Tasas de Cambio" onAction="#handleSaveRates" maxWidth="Infinity" styleClass="btn-primary" style="-fx-padding: 8px;" />
+            </VBox>
+
+            <!-- Card 3: Datos de la Clínica / Centro Médico -->
+            <VBox spacing="12.0" styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label text="🏥" style="-fx-font-size: 20px;" />
+                    <VBox spacing="2.0">
+                        <Label text="Datos Institucionales de la Clínica" style="-fx-font-weight: 800; -fx-font-size: 14px;" />
+                        <Label text="Aparecen en el encabezado de los informes médicos y recetas PDF" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                    </VBox>
+                </HBox>
+
+                <Separator />
+
+                <GridPane hgap="12.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0" />
+                        <ColumnConstraints percentWidth="50.0" />
+                    </columnConstraints>
+
+                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Nombre de la Institución / Clínica *" styleClass="field-label" />
+                        <TextField fx:id="txtClinicName" promptText="Centro Médico Especializado..." />
+                    </VBox>
+
+                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Teléfono Institucional" styleClass="field-label" />
+                        <TextField fx:id="txtClinicPhone" promptText="+58 276 355-1234" />
+                    </VBox>
+
+                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                        <Label text="Dirección Física Completa" styleClass="field-label" />
+                        <TextField fx:id="txtClinicAddress" promptText="Av. Principal, Edificio Médico..." />
+                    </VBox>
+                </GridPane>
+
+                <HBox alignment="CENTER_RIGHT">
+                    <Button text="💾 Guardar Datos de la Clínica" onAction="#handleSaveClinicSettings" styleClass="btn-primary" style="-fx-padding: 8px 18px;" />
+                </HBox>
+            </VBox>
+
+        </GridPane>
+
+    </VBox>
+</ScrollPane>

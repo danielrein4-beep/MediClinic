@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.mediclinic.controllers.ProceduresViewController"
+      spacing="14.0"
+      styleClass="main-container">
+
+    <!-- Top Bar: Header & Live Currency Info -->
+    <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="card" style="-fx-padding: 10px 18px;">
+        <VBox spacing="2.0">
+            <Label text="💉 Módulo de Procedimientos &amp; Cotizaciones Multidivisa" styleClass="section-title" style="-fx-font-size: 16px;" />
+            <Label text="Gestión de cirugías, procedimientos y presupuestos en tiempo real (USD, VES, COP)" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <!-- Live Exchange Rates Display Badge -->
+        <HBox alignment="CENTER" spacing="10.0" styleClass="currency-pill">
+            <Label text="💱 Tasas Activas:" style="-fx-font-weight: 700; -fx-font-size: 11px; -fx-text-fill: #0f172a;" />
+            <Label fx:id="lblHeaderTasaVes" text="VES: Bs. 38.50" style="-fx-font-weight: bold; -fx-text-fill: #0284c7;" />
+            <Label text="|" style="-fx-text-fill: #cbd5e1;" />
+            <Label fx:id="lblHeaderTasaCop" text="COP: $ 4,100" style="-fx-font-weight: bold; -fx-text-fill: #6366f1;" />
+        </HBox>
+
+        <Button text="⚙️ Tasas" onAction="#handleOpenRatesModal" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 5px 10px;" />
+    </HBox>
+
+    <!-- Main Layout: Form on the Left, Table & Details on the Right -->
+    <HBox spacing="14.0" VBox.vgrow="ALWAYS">
+
+        <!-- Left Form Card: Nueva Cotización / Procedimiento -->
+        <ScrollPane fx:id="leftFormScrollPane" fitToWidth="true" style="-fx-background-color: transparent;" prefWidth="440.0" minWidth="410.0">
+            <VBox spacing="12.0" styleClass="card" style="-fx-padding: 16px;">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label text="➕ Nueva Cotización / Procedimiento" styleClass="section-title" style="-fx-font-size: 14px;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="🧹 Limpiar" onAction="#handleClearForm" styleClass="btn-secondary" style="-fx-font-size: 10px; -fx-padding: 3px 8px;" />
+                </HBox>
+
+                <Separator />
+
+                <!-- Buscador de Paciente -->
+                <VBox spacing="6.0">
+                    <Label text="1. Seleccionar Paciente *" styleClass="field-label" />
+                    <HBox spacing="6.0" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtPatientSearch" promptText="Buscar paciente por nombre o cédula..." HBox.hgrow="ALWAYS" />
+                        <Button text="❌" onAction="#handleClearPatient" styleClass="btn-secondary" style="-fx-padding: 6px 10px;" />
+                    </HBox>
+
+                    <!-- Lista desplegable flotante para autocompletado -->
+                    <ListView fx:id="listPatientSuggestions" prefHeight="100.0" visible="false" managed="false" style="-fx-border-color: #cbd5e1; -fx-border-radius: 6px;" />
+
+                    <!-- Tarjeta de Paciente Seleccionado -->
+                    <VBox fx:id="cardSelectedPatient" visible="false" managed="false" spacing="4.0"
+                          style="-fx-background-color: #f0fdf4; -fx-border-color: #86efac; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 8px 12px;">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label text="👤" style="-fx-font-size: 14px;" />
+                            <Label fx:id="lblPatientName" text="Nombre del Paciente" style="-fx-font-weight: 800; -fx-text-fill: #166534; -fx-font-size: 12px;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblPatientOrigin" text="🏠 Local" />
+                        </HBox>
+                        <HBox spacing="12.0">
+                            <Label fx:id="lblPatientIdCard" text="C.I: V-12345678" style="-fx-font-size: 11px; -fx-text-fill: #374151;" />
+                            <Label fx:id="lblPatientHistory" text="Exp: HC-2026-0001" style="-fx-font-size: 11px; -fx-text-fill: #0284c7; -fx-font-weight: bold;" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Procedimiento -->
+                <VBox spacing="6.0">
+                    <Label text="2. Procedimiento / Cirugía *" styleClass="field-label" />
+                    <TextField fx:id="txtProcedureType" promptText="Ingresa el nombre del procedimiento o cirugía (ej. Resección de Quiste, Biopsia, Endoscopia...)" maxWidth="Infinity" />
+                </VBox>
+
+                <VBox spacing="6.0">
+                    <Label text="Descripción / Detalle Clínico" styleClass="field-label" />
+                    <TextArea fx:id="txtDescription" promptText="Ej. Resección de quiste sebáceo en región dorsal con anestesia local..." prefRowCount="2" wrapText="true" />
+                </VBox>
+
+                <!-- Precio Base en USD & Conversor Multimoneda en Tiempo Real -->
+                <VBox spacing="8.0" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 10px; -fx-border-color: #e2e8f0; -fx-border-radius: 10px;">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="3. Precio Base en Dólares (USD) *" styleClass="field-label" style="-fx-text-fill: #0f172a; -fx-font-weight: 700;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Cálculo Automático 💱" style="-fx-font-size: 10px; -fx-text-fill: #0ea5e9; -fx-font-weight: 700;" />
+                    </HBox>
+
+                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                        <Label text="USD $" style="-fx-font-weight: 800; -fx-font-size: 14px; -fx-text-fill: #166534;" />
+                        <TextField fx:id="txtAmountUsd" promptText="0.00" style="-fx-font-size: 15px; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" />
+                    </HBox>
+
+                    <!-- Tarjetas de Conversión Multimoneda Reactiva -->
+                    <GridPane hgap="8.0" vgap="8.0">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50.0" />
+                            <ColumnConstraints percentWidth="50.0" />
+                        </columnConstraints>
+
+                        <!-- VES Card -->
+                        <VBox styleClass="currency-box-ves" spacing="2.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Bolívares (VES)" styleClass="currency-title" />
+                            <Label fx:id="lblConvertedVes" text="Bs. 0.00" styleClass="currency-value-ves" />
+                            <Label fx:id="lblRateVesSub" text="Tasa: 1 USD = Bs. 38.50" styleClass="currency-rate-sub" />
+                        </VBox>
+
+                        <!-- COP Card -->
+                        <VBox styleClass="currency-box-cop" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Pesos Colombianos (COP)" styleClass="currency-title" />
+                            <Label fx:id="lblConvertedCop" text="COP 0" styleClass="currency-value-cop" />
+                            <Label fx:id="lblRateCopSub" text="Tasa: 1 USD = 4,100 COP" styleClass="currency-rate-sub" />
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- Estado & Programación -->
+                <HBox spacing="10.0">
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Estado Inicial" styleClass="field-label" />
+                        <ComboBox fx:id="cbInitialStatus" maxWidth="Infinity" />
+                    </VBox>
+
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Fecha Planificada (Opcional)" styleClass="field-label" />
+                        <DatePicker fx:id="dpPlannedDate" maxWidth="Infinity" promptText="dd/mm/aaaa" />
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="4.0">
+                    <Label text="Notas u Observaciones" styleClass="field-label" />
+                    <TextArea fx:id="txtNotes" promptText="Condiciones de pago, materiales incluidos, preparación..." prefRowCount="2" wrapText="true" />
+                </VBox>
+
+                <Label fx:id="lblFormFeedback" text="" wrapText="true" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+
+                <Button text="💾 Registrar Cotización / Procedimiento" onAction="#handleSaveQuote" maxWidth="Infinity" styleClass="btn-primary" style="-fx-padding: 10px; -fx-font-size: 13px;" />
+            </VBox>
+        </ScrollPane>
+
+        <!-- Right Side: Tabla General, Filtros e Historial -->
+        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+
+            <!-- Filter Chips & Search Bar -->
+            <VBox spacing="8.0" styleClass="card" style="-fx-padding: 12px 16px;">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label text="Historial de Cotizaciones &amp; Procedimientos" styleClass="section-title" style="-fx-font-size: 14px;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtTableSearch" promptText="🔍 Filtrar por paciente, cédula o procedimiento..." prefWidth="280.0" />
+                </HBox>
+
+                <!-- Chips de filtro por estado -->
+                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                    <Label text="Filtrar por:" style="-fx-font-size: 11px; -fx-text-fill: #64748b; -fx-font-weight: 600;" />
+                    <Button fx:id="btnFilterAll" text="Todos (0)" onAction="#handleFilterAll" styleClass="filter-chip, active" />
+                    <Button fx:id="btnFilterQuoted" text="💲 Cotizadas (0)" onAction="#handleFilterQuoted" styleClass="filter-chip" />
+                    <Button fx:id="btnFilterPlanned" text="📝 Planificadas (0)" onAction="#handleFilterPlanned" styleClass="filter-chip" />
+                    <Button fx:id="btnFilterCompleted" text="✅ Realizadas (0)" onAction="#handleFilterCompleted" styleClass="filter-chip" />
+                </HBox>
+            </VBox>
+
+            <!-- Main Table -->
+            <TableView fx:id="tableQuotes" VBox.vgrow="ALWAYS" styleClass="custom-table">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="55.0" />
+                    <TableColumn fx:id="colPatient" text="Paciente" prefWidth="180.0" />
+                    <TableColumn fx:id="colProcedure" text="Procedimiento" prefWidth="190.0" />
+                    <TableColumn fx:id="colUsd" text="USD ($)" prefWidth="85.0" />
+                    <TableColumn fx:id="colVes" text="VES (Bs.)" prefWidth="105.0" />
+                    <TableColumn fx:id="colCop" text="COP ($)" prefWidth="100.0" />
+                    <TableColumn fx:id="colStatus" text="Estado" prefWidth="105.0" />
+                    <TableColumn fx:id="colPlannedDate" text="Fecha Planif." prefWidth="95.0" />
+                    <TableColumn fx:id="colActions" text="Acción Rápida" prefWidth="120.0" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+
+            <!-- Bottom Detail & Progression Bar (Visible when a row is selected) -->
+            <VBox fx:id="detailPanel" visible="false" managed="false" spacing="8.0" styleClass="card"
+                  style="-fx-background-color: #f8fafc; -fx-border-color: #0ea5e9; -fx-border-width: 1px 1px 1px 4px; -fx-padding: 12px 16px;">
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <VBox spacing="2.0">
+                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                            <Label fx:id="lblDetailTitle" text="Cirugía Menor (#1)" style="-fx-font-weight: 800; -fx-font-size: 14px; -fx-text-fill: #0f172a;" />
+                            <Label fx:id="lblDetailStatus" text="COTIZADA" />
+                        </HBox>
+                        <Label fx:id="lblDetailPatient" text="Carlos Perez | C.I: V-18456789" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <!-- Currency Summary -->
+                    <HBox spacing="14.0" alignment="CENTER_RIGHT">
+                        <VBox alignment="CENTER_RIGHT">
+                            <Label text="USD" style="-fx-font-size: 10px; -fx-text-fill: #64748b;" />
+                            <Label fx:id="lblDetailUsd" text="USD 0.00" style="-fx-font-weight: bold; -fx-text-fill: #166534; -fx-font-size: 12px;" />
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT">
+                            <Label text="VES" style="-fx-font-size: 10px; -fx-text-fill: #64748b;" />
+                            <Label fx:id="lblDetailVes" text="Bs. 0.00" style="-fx-font-weight: bold; -fx-text-fill: #1e40af; -fx-font-size: 12px;" />
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT">
+                            <Label text="COP" style="-fx-font-size: 10px; -fx-text-fill: #64748b;" />
+                            <Label fx:id="lblDetailCop" text="COP 0" style="-fx-font-weight: bold; -fx-text-fill: #6b21a8; -fx-font-size: 12px;" />
+                        </VBox>
+                    </HBox>
+
+                    <Separator orientation="VERTICAL" />
+
+                    <!-- Direct State Progression Buttons -->
+                    <HBox spacing="6.0" alignment="CENTER_RIGHT">
+                        <Button fx:id="btnDetailPlan" text="📝 Planificar Fecha" onAction="#handleDetailPlan" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 10px;" />
+                        <Button fx:id="btnDetailComplete" text="✅ Marcar Realizada" onAction="#handleDetailComplete" styleClass="btn-primary" style="-fx-font-size: 11px; -fx-padding: 6px 10px;" />
+                        <Button fx:id="btnDetailCancel" text="🔴 Cancelar" onAction="#handleDetailCancel" styleClass="btn-danger" style="-fx-font-size: 11px; -fx-padding: 6px 10px;" />
+                    </HBox>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <Label text="📅 Programada para:" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #475569;" />
+                    <Label fx:id="lblDetailPlannedDate" text="28/08/2026 09:00" style="-fx-font-size: 11px; -fx-text-fill: #0284c7; -fx-font-weight: bold;" />
+                    <Separator orientation="VERTICAL" />
+                    <Label fx:id="lblDetailNotes" text="Sin observaciones." style="-fx-font-size: 11px; -fx-text-fill: #64748b;" wrapText="true" HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
+
+        </VBox>
+
+    </HBox>
+
+</VBox>

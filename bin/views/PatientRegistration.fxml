@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.mediclinic.controllers.PatientRegistrationController"
+            fitToWidth="true"
+            styleClass="main-container"
+            style="-fx-background-color: transparent;">
+
+    <VBox spacing="18.0" styleClass="card" style="-fx-max-width: 820px; -fx-padding: 24px;">
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <Label fx:id="lblFormTitle" text="Registrar Nuevo Paciente" styleClass="section-title" />
+                <Label text="Ingresa los datos personales y de contacto para generar el expediente médico digital." styleClass="greeting-sublabel" />
+            </VBox>
+            <Label fx:id="lblHistoryNumber" text="Expediente sugerido: HC-2026-0003"
+                   style="-fx-background-color: #e0f2fe; -fx-text-fill: #0284c7; -fx-font-weight: bold; -fx-padding: 6px 12px; -fx-background-radius: 20px; -fx-font-size: 11px;" />
+        </HBox>
+
+        <Separator />
+
+        <!-- Feedback Alert Banner -->
+        <HBox fx:id="feedbackContainer" alignment="CENTER_LEFT" spacing="10.0" visible="false" managed="false">
+            <Label fx:id="lblFeedback" text="Mensaje de error o éxito" wrapText="true" />
+        </HBox>
+
+        <!-- Form Grid -->
+        <GridPane hgap="16.0" vgap="14.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50.0" />
+                <ColumnConstraints percentWidth="50.0" />
+            </columnConstraints>
+
+            <!-- Cédula de Identidad -->
+            <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Cédula de Identidad *" styleClass="field-label" />
+                <HBox spacing="6.0">
+                    <ComboBox fx:id="cbCedulaPrefix" prefWidth="95.0" />
+                    <TextField fx:id="txtCedula" promptText="Ej. 30398619 o 1098765432 (Venezuela / Colombia)" HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
+
+            <!-- Tipo de Origen: Local vs Foráneo -->
+            <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Origen del Paciente *" styleClass="field-label" />
+                <HBox spacing="16.0" alignment="CENTER_LEFT" style="-fx-padding: 6px 0;">
+                    <fx:define>
+                        <ToggleGroup fx:id="originGroup" />
+                    </fx:define>
+                    <RadioButton fx:id="rbLocal" text="🏠 Paciente Local" toggleGroup="$originGroup" selected="true" style="-fx-font-weight: 600; -fx-text-fill: #0f172a;" />
+                    <RadioButton fx:id="rbForaneo" text="✈️ Paciente Foráneo" toggleGroup="$originGroup" style="-fx-font-weight: 600; -fx-text-fill: #0f172a;" />
+                </HBox>
+            </VBox>
+
+            <!-- Nombres -->
+            <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Nombres *" styleClass="field-label" />
+                <TextField fx:id="txtFirstName" promptText="Nombres completos" />
+            </VBox>
+
+            <!-- Apellidos -->
+            <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Apellidos *" styleClass="field-label" />
+                <TextField fx:id="txtLastName" promptText="Apellidos completos" />
+            </VBox>
+
+            <!-- Ciudad / Estado si es foráneo -->
+            <VBox fx:id="containerForaneoCity" spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="2" visible="false" managed="false">
+                <Label text="Ciudad / Región de Procedencia (Foráneo) *" styleClass="field-label" />
+                <TextField fx:id="txtOriginCity" promptText="Ej. Mérida, Barinas, Cúcuta..." />
+            </VBox>
+
+            <!-- Fecha de Nacimiento -->
+            <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Fecha de Nacimiento" styleClass="field-label" />
+                <DatePicker fx:id="dpBirthDate" promptText="dd/mm/aaaa" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Teléfono -->
+            <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <Label text="Teléfono / WhatsApp *" styleClass="field-label" />
+                <TextField fx:id="txtPhone" promptText="Ej. 0414-1234567 (Obligatorio)" />
+            </VBox>
+
+            <!-- Correo Electrónico -->
+            <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <Label text="Correo Electrónico" styleClass="field-label" />
+                <TextField fx:id="txtEmail" promptText="paciente@correo.com" />
+            </VBox>
+
+            <!-- Dirección de Habitación -->
+            <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                <Label text="Dirección de Habitación" styleClass="field-label" />
+                <TextArea fx:id="txtAddress" promptText="Dirección de residencia o notas de ubicación" prefRowCount="2" wrapText="true" />
+            </VBox>
+        </GridPane>
+
+        <Separator />
+
+        <!-- Form Action Buttons -->
+        <HBox spacing="12.0" alignment="CENTER_RIGHT">
+            <Button fx:id="btnClear" text="🧹 Limpiar Formulario" onAction="#handleClear" styleClass="btn-secondary" />
+            <Button fx:id="btnSave" text="💾 Guardar Paciente" onAction="#handleSave" styleClass="btn-primary" />
+        </HBox>
+    </VBox>
+
+</ScrollPane>

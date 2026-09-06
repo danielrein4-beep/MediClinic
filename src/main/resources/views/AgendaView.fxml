@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.mediclinic.controllers.AgendaViewController"
+      spacing="14.0"
+      styleClass="main-container">
+
+    <!-- Top Header Bar -->
+    <HBox alignment="CENTER_LEFT" spacing="14.0" styleClass="card" style="-fx-padding: 12px 18px;">
+        <VBox spacing="2.0">
+            <Label text="📅 Agenda Médica &amp; Calendario Interactivo" styleClass="section-title" style="-fx-font-size: 16px;" />
+            <Label text="Programación y gestión sincronizada de citas médicas entre Doctor y Secretaría en tiempo real" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <!-- Navigation Controls for Calendar -->
+        <HBox alignment="CENTER" spacing="8.0">
+            <Button text="◀ Anterior" onAction="#handlePrevMonth" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 12px; -fx-cursor: hand;" />
+            <Button text="📅 Hoy" onAction="#handleToday" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 12px; -fx-cursor: hand;" />
+            <Button text="Siguiente ▶" onAction="#handleNextMonth" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 12px; -fx-cursor: hand;" />
+        </HBox>
+
+        <Label fx:id="lblMonthYearTitle" text="Agosto 2026" style="-fx-font-size: 16px; -fx-font-weight: 800; -fx-text-fill: #0ea5e9; -fx-min-width: 140px; -fx-alignment: center;" />
+    </HBox>
+
+    <!-- Main Content: Calendar Grid on Left, Day Management Panel on Right -->
+    <HBox spacing="14.0" VBox.vgrow="ALWAYS">
+
+        <!-- Left: Interactive Monthly Calendar Grid -->
+        <VBox spacing="10.0" HBox.hgrow="ALWAYS" styleClass="card" style="-fx-padding: 14px;">
+            <!-- Weekday Headers -->
+            <GridPane fx:id="gridWeekdays" hgap="4.0" vgap="4.0" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="14.28" halignment="CENTER" />
+                </columnConstraints>
+                <!-- Labels added programmatically or styled -->
+            </GridPane>
+
+            <Separator />
+
+            <!-- Days Grid -->
+            <GridPane fx:id="gridCalendarDays" hgap="6.0" vgap="6.0" VBox.vgrow="ALWAYS" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="14.28" />
+                    <ColumnConstraints percentWidth="14.28" />
+                    <ColumnConstraints percentWidth="14.28" />
+                    <ColumnConstraints percentWidth="14.28" />
+                    <ColumnConstraints percentWidth="14.28" />
+                    <ColumnConstraints percentWidth="14.28" />
+                    <ColumnConstraints percentWidth="14.28" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="16.66" />
+                    <RowConstraints percentHeight="16.66" />
+                    <RowConstraints percentHeight="16.66" />
+                    <RowConstraints percentHeight="16.66" />
+                    <RowConstraints percentHeight="16.66" />
+                    <RowConstraints percentHeight="16.66" />
+                </rowConstraints>
+            </GridPane>
+        </VBox>
+
+        <!-- Right: Day Appointment Manager & Quick Add Form -->
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" prefWidth="440.0" minWidth="410.0">
+            <VBox spacing="14.0">
+
+                <!-- Selected Day Appointments List Card -->
+                <VBox spacing="12.0" styleClass="card" style="-fx-padding: 16px;">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                            <Label fx:id="lblSelectedDateHeader" text="Citas del Día" styleClass="section-title" style="-fx-font-size: 14px;" wrapText="true" />
+                            <Label fx:id="lblSelectedDateSub" text="Selecciona un día del calendario para ver o programar citas" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                        </VBox>
+                        <Label fx:id="lblDayAppointmentCount" text="0 citas"
+                               style="-fx-background-color: #e0f2fe; -fx-text-fill: #0284c7; -fx-font-weight: bold; -fx-padding: 4px 10px; -fx-background-radius: 12px; -fx-font-size: 11px;" />
+                    </HBox>
+
+                    <!-- Blocked Date Banner -->
+                    <VBox fx:id="boxBlockedBanner" visible="false" managed="false" spacing="6.0"
+                          style="-fx-background-color: #fff1f2; -fx-border-color: #fda4af; -fx-border-width: 1px 1px 1px 4px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px;">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label text="🔒 FECHA BLOQUEADA / NO DISPONIBLE" style="-fx-font-weight: 800; -fx-text-fill: #be123c; -fx-font-size: 12px;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="🔓 Desbloquear Día" onAction="#handleUnblockDate" styleClass="btn-secondary" style="-fx-font-size: 10px; -fx-padding: 4px 8px; -fx-cursor: hand;" />
+                        </HBox>
+                        <Label fx:id="lblBlockedReason" text="Motivo: Vacaciones del Doctor" style="-fx-font-size: 11px; -fx-text-fill: #9f1239; -fx-font-weight: 600;" />
+                    </VBox>
+
+                    <!-- Non-blocked Action Button -->
+                    <HBox fx:id="boxBlockActionRow" alignment="CENTER_RIGHT">
+                        <Button fx:id="btnBlockDate" text="🔒 Bloquear Esta Fecha (Vacaciones/Congreso)" onAction="#handlePromptBlockDate" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 4px 10px; -fx-cursor: hand;" />
+                    </HBox>
+
+                    <Separator />
+
+                    <!-- Appointments Container -->
+                    <VBox fx:id="containerDayAppointments" spacing="8.0" minHeight="80.0">
+                        <!-- Dynamic Appointment Cards -->
+                    </VBox>
+
+                    <!-- Empty state placeholder -->
+                    <VBox fx:id="boxNoAppointments" alignment="CENTER" spacing="6.0" style="-fx-padding: 16px 0;">
+                        <Label text="☕" style="-fx-font-size: 24px;" />
+                        <Label text="No hay citas agendadas para esta fecha" style="-fx-font-size: 12px; -fx-text-fill: #94a3b8; -fx-font-weight: 600;" />
+                        <Label text="Usa el formulario inferior para programar una nueva cita" style="-fx-font-size: 11px; -fx-text-fill: #cbd5e1;" />
+                    </VBox>
+                </VBox>
+
+                <!-- Quick Add Appointment Card -->
+                <VBox fx:id="cardQuickAdd" spacing="12.0" styleClass="card" style="-fx-padding: 16px;">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <Label text="➕ Agendar Nueva Cita" styleClass="section-title" style="-fx-font-size: 14px;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="🧹 Limpiar" onAction="#handleClearForm" styleClass="btn-secondary" style="-fx-font-size: 10px; -fx-padding: 3px 8px; -fx-cursor: hand;" />
+                    </HBox>
+
+                    <Separator />
+
+                    <!-- Cédula con Autocompletado Instantáneo -->
+                    <VBox spacing="4.0">
+                        <Label text="Cédula de Identidad *" styleClass="field-label" />
+                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                            <TextField fx:id="txtCedula" promptText="Ej. V-30398619 o 1098765432 (Venezuela / Colombia)" HBox.hgrow="ALWAYS" />
+                            <Button text="🔍" onAction="#handleSearchPatientByIdCard" styleClass="btn-secondary" style="-fx-padding: 6px 10px;" />
+                        </HBox>
+                        <Label fx:id="lblPatientFoundHint" text="" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #10b981;" visible="false" managed="false" />
+                    </VBox>
+
+                    <!-- Nombres y Apellidos -->
+                    <HBox spacing="10.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Nombres *" styleClass="field-label" />
+                            <TextField fx:id="txtFirstName" promptText="Nombres" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Apellidos *" styleClass="field-label" />
+                            <TextField fx:id="txtLastName" promptText="Apellidos" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Teléfono / WhatsApp -->
+                    <VBox spacing="4.0">
+                        <Label text="Teléfono / WhatsApp *" styleClass="field-label" />
+                        <TextField fx:id="txtPhone" promptText="Ej. 0414-1234567" />
+                    </VBox>
+
+                    <!-- Hora y Motivo -->
+                    <HBox spacing="10.0">
+                        <VBox spacing="4.0" prefWidth="150.0">
+                            <Label text="Hora de la Cita *" styleClass="field-label" />
+                            <ComboBox fx:id="cbAppointmentTime" maxWidth="Infinity" />
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label text="Motivo / Consulta" styleClass="field-label" />
+                            <TextField fx:id="txtReason" promptText="Ej. Control, Evaluación..." />
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="lblFormFeedback" text="" wrapText="true" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+
+                    <Button text="📅 Guardar Cita en Agenda" onAction="#handleSaveAppointment" maxWidth="Infinity" styleClass="btn-primary" style="-fx-padding: 9px;" />
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+
+    </HBox>
+
+</VBox>
