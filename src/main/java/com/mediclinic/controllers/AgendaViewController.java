@@ -3,10 +3,12 @@ package com.mediclinic.controllers;
 import com.mediclinic.dao.AppointmentDAO;
 import com.mediclinic.dao.BlockedDateDAO;
 import com.mediclinic.dao.PatientDAO;
+import com.mediclinic.dao.WaitingRoomDAO;
 import com.mediclinic.models.Appointment;
 import com.mediclinic.models.BlockedDate;
 import com.mediclinic.models.Patient;
 import com.mediclinic.models.User;
+import com.mediclinic.models.WaitingRoomEntry;
 import com.mediclinic.services.SessionManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -246,7 +249,11 @@ public class AgendaViewController {
 
         // Estilos base y Glassmorphism sutil
         if (isBlocked) {
-            cell.setStyle(cell.getStyle() + "-fx-background-color: rgba(241, 245, 249, 0.95); -fx-border-color: #fca5a5; -fx-border-width: 1.5px; -fx-border-radius: 10px;");
+            if (isSelected) {
+                cell.setStyle(cell.getStyle() + "-fx-background-color: #ffe4e6; -fx-border-color: #e11d48; -fx-border-width: 2px; -fx-border-radius: 10px;");
+            } else {
+                cell.setStyle(cell.getStyle() + "-fx-background-color: #fff1f2; -fx-border-color: #fca5a5; -fx-border-width: 1.5px; -fx-border-radius: 10px;");
+            }
         } else if (isSelected) {
             cell.setStyle(cell.getStyle() + "-fx-background-color: #e0f2fe; -fx-border-color: #0284c7; -fx-border-width: 2px; -fx-border-radius: 10px;");
         } else if (isToday) {
@@ -273,12 +280,12 @@ public class AgendaViewController {
 
         cell.getChildren().add(lblDay);
 
-        // Indicador de Bloqueo
+        // Indicador de Bloqueo (solo candado sin texto)
         if (isBlocked && isCurrentMonth) {
-            Label badgeBlocked = new Label("🔒 Bloqueado");
+            Label badgeBlocked = new Label("🔒");
             badgeBlocked.setMaxWidth(Double.MAX_VALUE);
             badgeBlocked.setAlignment(Pos.CENTER);
-            badgeBlocked.setStyle("-fx-background-color: #ffe4e6; -fx-text-fill: #be123c; -fx-font-size: 8.5px; -fx-font-weight: bold; -fx-padding: 2px 4px; -fx-background-radius: 6px; -fx-border-color: #fecdd3; -fx-border-radius: 6px;");
+            badgeBlocked.setStyle("-fx-background-color: #ffe4e6; -fx-text-fill: #be123c; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 1px 4px; -fx-background-radius: 6px; -fx-border-color: #fecdd3; -fx-border-radius: 6px;");
             cell.getChildren().add(badgeBlocked);
         } else if (isCurrentMonth && appointmentCount > 0) {
             Label badge = new Label("📅 " + appointmentCount + (appointmentCount == 1 ? " cita" : " citas"));
@@ -367,11 +374,13 @@ public class AgendaViewController {
         }
     }
 
+    private final WaitingRoomDAO waitingRoomDAO = new WaitingRoomDAO();
+
     private VBox createAppointmentCard(Appointment app) {
         VBox card = new VBox(6);
-        card.setStyle("-fx-background-color: #f8fafc; -fx-border-color: #e2e8f0; -fx-border-width: 1px 1px 1px 4px; -fx-border-color: #0284c7; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 12px;");
+        card.setStyle("-fx-background-color: #f8fafc; -fx-border-color: #0284c7; -fx-border-width: 1px 1px 1px 4px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 12px;");
 
-        // Fila 1: Hora, Nombre y Botón Eliminar
+        // Fila 1: Hora, Nombre y Botones de Acción
         HBox topRow = new HBox(8);
         topRow.setAlignment(Pos.CENTER_LEFT);
 
@@ -382,12 +391,26 @@ public class AgendaViewController {
         lblName.setStyle("-fx-font-weight: 800; -fx-font-size: 13px; -fx-text-fill: #0f172a;");
         HBox.setHgrow(lblName, Priority.ALWAYS);
 
+        HBox actionsBox = new HBox(6);
+        actionsBox.setAlignment(Pos.CENTER_RIGHT);
+
+        Button btnReschedule = new Button("📅 Reprogramar");
+        btnReschedule.setStyle("-fx-background-color: #e0f2fe; -fx-text-fill: #0284c7; -fx-font-size: 10.5px; -fx-font-weight: bold; -fx-padding: 3px 8px; -fx-background-radius: 6px; -fx-cursor: hand;");
+        btnReschedule.setTooltip(new Tooltip("Cambiar fecha u hora de la cita"));
+        btnReschedule.setOnAction(e -> promptRescheduleAppointment(app));
+
+        Button btnSendWait = new Button("🚪 Sala");
+        btnSendWait.setStyle("-fx-background-color: #dcfce7; -fx-text-fill: #15803d; -fx-font-size: 10.5px; -fx-font-weight: bold; -fx-padding: 3px 8px; -fx-background-radius: 6px; -fx-cursor: hand;");
+        btnSendWait.setTooltip(new Tooltip("Pasar paciente a Sala de Espera"));
+        btnSendWait.setOnAction(e -> sendToWaitingRoom(app));
+
         Button btnDelete = new Button("🗑️");
-        btnDelete.setStyle("-fx-background-color: #fee2e2; -fx-text-fill: #dc2626; -fx-font-size: 11px; -fx-padding: 4px 8px; -fx-background-radius: 6px; -fx-cursor: hand;");
+        btnDelete.setStyle("-fx-background-color: #fee2e2; -fx-text-fill: #dc2626; -fx-font-size: 10.5px; -fx-padding: 3px 7px; -fx-background-radius: 6px; -fx-cursor: hand;");
         btnDelete.setTooltip(new Tooltip("Cancelar y eliminar cita"));
         btnDelete.setOnAction(e -> promptDeleteAppointment(app));
 
-        topRow.getChildren().addAll(lblTime, lblName, btnDelete);
+        actionsBox.getChildren().addAll(btnReschedule, btnSendWait, btnDelete);
+        topRow.getChildren().addAll(lblTime, lblName, actionsBox);
 
         // Fila 2: Cédula y Teléfono
         HBox infoRow = new HBox(12);
@@ -411,6 +434,139 @@ public class AgendaViewController {
         }
 
         return card;
+    }
+
+    public void promptRescheduleAppointment(Appointment app) {
+        if (app == null) return;
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Reprogramar Cita Médica");
+        dialog.setHeaderText("Reprogramar cita de: " + app.getFullName() + "\nFecha actual: " 
+                + app.getAppointmentDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) 
+                + " - " + app.getAppointmentTime());
+
+        ButtonType btnSave = new ButtonType("💾 Guardar Nueva Fecha", ButtonBar.ButtonData.OK_DONE);
+        ButtonType btnCancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnSave, btnCancel);
+
+        VBox content = new VBox(10);
+        content.setPadding(new javafx.geometry.Insets(14));
+
+        Label lblDatePrompt = new Label("Nueva Fecha de la Cita *:");
+        lblDatePrompt.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        DatePicker dpNewDate = new DatePicker(app.getAppointmentDate());
+        dpNewDate.setMaxWidth(Double.MAX_VALUE);
+
+        Label lblTimePrompt = new Label("Nueva Hora *:");
+        lblTimePrompt.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        ComboBox<String> cbNewTime = new ComboBox<>();
+        List<String> hours = new ArrayList<>();
+        String[] amHours = {"08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM"};
+        String[] pmHours = {"12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM"};
+        hours.addAll(Arrays.asList(amHours));
+        hours.addAll(Arrays.asList(pmHours));
+        cbNewTime.setItems(FXCollections.observableArrayList(hours));
+        cbNewTime.setValue(app.getAppointmentTime() != null ? app.getAppointmentTime() : "09:00 AM");
+        cbNewTime.setMaxWidth(Double.MAX_VALUE);
+
+        Label lblReasonPrompt = new Label("Motivo / Observación:");
+        lblReasonPrompt.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        TextField txtNewReason = new TextField(app.getReason() != null ? app.getReason() : "");
+
+        content.getChildren().addAll(lblDatePrompt, dpNewDate, lblTimePrompt, cbNewTime, lblReasonPrompt, txtNewReason);
+        dialog.getDialogPane().setContent(content);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == btnSave) {
+            LocalDate newDate = dpNewDate.getValue();
+            String newTime = cbNewTime.getValue();
+            String newReason = txtNewReason.getText().trim();
+
+            if (newDate == null) {
+                Alert err = new Alert(Alert.AlertType.ERROR, "Debe seleccionar una fecha válida.");
+                err.showAndWait();
+                return;
+            }
+
+            if (blockedDateDAO.isDateBlocked(newDate)) {
+                Alert err = new Alert(Alert.AlertType.ERROR, "La fecha seleccionada (" + newDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ") está bloqueada para consultas.");
+                err.showAndWait();
+                return;
+            }
+
+            app.setAppointmentDate(newDate);
+            app.setAppointmentTime(newTime != null ? newTime : "09:00 AM");
+            if (!newReason.isEmpty()) {
+                app.setReason(newReason);
+            }
+
+            boolean ok = appointmentDAO.update(app);
+            if (ok) {
+                this.selectedDate = newDate;
+                this.currentYearMonth = YearMonth.from(newDate);
+                renderCalendar();
+                loadDayAppointments();
+                notifySync();
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION, "✅ Cita reprogramada con éxito para el " + newDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " a las " + newTime);
+                success.showAndWait();
+            } else {
+                Alert err = new Alert(Alert.AlertType.ERROR, "No se pudo actualizar la cita en la base de datos.");
+                err.showAndWait();
+            }
+        }
+    }
+
+    public void sendToWaitingRoom(Appointment app) {
+        if (app == null) return;
+
+        // Verificar o registrar paciente si no tiene ID asignado
+        Integer patId = app.getPatientId();
+        if (patId == null || patId <= 0) {
+            Patient existing = patientDAO.findByIdCard(app.getIdCard());
+            if (existing != null) {
+                patId = existing.getId();
+                String nextMrn = patientDAO.generateNextMedicalRecordNumber();
+                Patient newPat = new Patient(
+                        nextMrn,
+                        app.getIdCard(),
+                        app.getFirstName(),
+                        app.getLastName(),
+                        null,
+                        app.getPhone(),
+                        "",
+                        "LOCAL",
+                        "Local",
+                        "Consultorio"
+                );
+                boolean saved = patientDAO.insert(newPat);
+                if (saved) {
+                    patId = newPat.getId();
+                }
+            }
+        }
+
+        if (patId == null || patId <= 0) {
+            Alert err = new Alert(Alert.AlertType.ERROR, "No se pudo vincular o registrar el paciente para la sala de espera.");
+            err.showAndWait();
+            return;
+        }
+
+        String waitReason = app.getReason() != null && !app.getReason().trim().isEmpty() ? app.getReason().trim() : "Consulta Médica Agendada";
+        WaitingRoomEntry entry = new WaitingRoomEntry(patId, waitReason);
+
+        boolean ok = waitingRoomDAO.insert(entry);
+        if (ok) {
+            notifySync();
+            if (WaitingRoomViewController.getInstance() != null) {
+                WaitingRoomViewController.getInstance().loadWaitingRoom();
+            }
+            Alert success = new Alert(Alert.AlertType.INFORMATION, "✅ Paciente " + app.getFullName() + " transferido exitosamente a la Sala de Espera.");
+            success.showAndWait();
+        } else {
+            Alert err = new Alert(Alert.AlertType.ERROR, "No se pudo ingresar el paciente a la sala de espera.");
+            err.showAndWait();
+        }
     }
 
     @FXML
@@ -475,8 +631,18 @@ public class AgendaViewController {
 
         String clean = query.trim();
         Patient p = patientDAO.findByIdCard(clean);
-        if (p == null && !clean.toUpperCase().startsWith("V-") && !clean.toUpperCase().startsWith("E-")) {
+        if (p == null && !clean.toUpperCase().startsWith("V-") && !clean.toUpperCase().startsWith("E-") && !clean.toUpperCase().startsWith("J-")) {
             p = patientDAO.findByIdCard("V-" + clean);
+            if (p == null) p = patientDAO.findByIdCard("E-" + clean);
+        }
+        if (p == null) {
+            String digits = clean.replaceAll("\\D", "");
+            if (digits.length() >= 4) {
+                List<Patient> list = patientDAO.search(digits);
+                if (!list.isEmpty()) {
+                    p = list.get(0);
+                }
+            }
         }
 
         if (p != null) {
@@ -486,7 +652,7 @@ public class AgendaViewController {
             if (p.getPhone() != null && !p.getPhone().isEmpty()) {
                 txtPhone.setText(p.getPhone());
             }
-            lblPatientFoundHint.setText("✅ Paciente encontrado: " + p.getFullName() + " (Exp: " + p.getMedicalRecordNumber() + ")");
+            lblPatientFoundHint.setText("✅ Paciente encontrado: " + p.getFullName() + " (C.I: " + p.getIdCard() + " | Exp: " + p.getMedicalRecordNumber() + ")");
             lblPatientFoundHint.setVisible(true);
             lblPatientFoundHint.setManaged(true);
         } else {

@@ -107,6 +107,12 @@ public class WaitingRoomViewController {
     @FXML
     private TableColumn<WaitingRoomEntry, Void> colActions;
 
+    private static WaitingRoomViewController instance;
+
+    public static WaitingRoomViewController getInstance() {
+        return instance;
+    }
+
     private final WaitingRoomDAO waitingRoomDAO = new WaitingRoomDAO();
     private final PatientDAO patientDAO = new PatientDAO();
     private final DailyPaymentDAO dailyPaymentDAO = new DailyPaymentDAO();
@@ -121,6 +127,7 @@ public class WaitingRoomViewController {
 
     @FXML
     public void initialize() {
+        instance = this;
         // Configure list suggestions
         listSuggestions.setItems(suggestedPatients);
         listSuggestions.setCellFactory(lv -> new ListCell<>() {

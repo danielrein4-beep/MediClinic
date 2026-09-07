@@ -19,14 +19,15 @@
 
         <Region HBox.hgrow="ALWAYS" />
 
-        <!-- Navigation Controls for Calendar -->
-        <HBox alignment="CENTER" spacing="8.0">
-            <Button text="◀ Anterior" onAction="#handlePrevMonth" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 12px; -fx-cursor: hand;" />
-            <Button text="📅 Hoy" onAction="#handleToday" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 12px; -fx-cursor: hand;" />
-            <Button text="Siguiente ▶" onAction="#handleNextMonth" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 6px 12px; -fx-cursor: hand;" />
+        <!-- Navigation Controls for Calendar (Fixed static dimensions to prevent layout shifting) -->
+        <HBox alignment="CENTER_RIGHT" spacing="12.0" minWidth="380.0" prefWidth="380.0" maxWidth="380.0">
+            <HBox alignment="CENTER" spacing="6.0" minWidth="215.0" prefWidth="215.0" maxWidth="215.0">
+                <Button text="◀ Anterior" onAction="#handlePrevMonth" styleClass="btn-secondary" minWidth="75.0" prefWidth="75.0" maxWidth="75.0" style="-fx-font-size: 11px; -fx-padding: 6px 4px; -fx-cursor: hand;" />
+                <Button text="📅 Hoy" onAction="#handleToday" styleClass="btn-secondary" minWidth="55.0" prefWidth="55.0" maxWidth="55.0" style="-fx-font-size: 11px; -fx-padding: 6px 4px; -fx-cursor: hand;" />
+                <Button text="Siguiente ▶" onAction="#handleNextMonth" styleClass="btn-secondary" minWidth="80.0" prefWidth="80.0" maxWidth="80.0" style="-fx-font-size: 11px; -fx-padding: 6px 4px; -fx-cursor: hand;" />
+            </HBox>
+            <Label fx:id="lblMonthYearTitle" text="Agosto 2026" minWidth="150.0" prefWidth="150.0" maxWidth="150.0" style="-fx-font-size: 16px; -fx-font-weight: 800; -fx-text-fill: #0ea5e9; -fx-alignment: center-right;" />
         </HBox>
-
-        <Label fx:id="lblMonthYearTitle" text="Agosto 2026" style="-fx-font-size: 16px; -fx-font-weight: 800; -fx-text-fill: #0ea5e9; -fx-min-width: 140px; -fx-alignment: center;" />
     </HBox>
 
     <!-- Main Content: Calendar Grid on Left, Day Management Panel on Right -->
