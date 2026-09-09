@@ -79,7 +79,7 @@ public class PdfReportService {
             reportsDir.mkdirs();
         }
 
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS"));
         String filename = String.format("Cierre_Caja_%s.pdf", timestamp);
         File pdfFile = new File(reportsDir, filename);
 

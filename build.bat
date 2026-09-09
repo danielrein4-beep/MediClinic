@@ -43,7 +43,6 @@ if exist "%SOURCES_FILE%" del "%SOURCES_FILE%"
 
 if %COMPILE_STATUS% neq 0 (
     echo [ERROR] Error durante la compilacion de clases.
-    pause
     exit /b %COMPILE_STATUS%
 )
 
