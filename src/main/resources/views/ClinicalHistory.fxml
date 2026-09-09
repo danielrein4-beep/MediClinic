@@ -175,6 +175,13 @@
                     <TextArea fx:id="txtEvolution" promptText="Antecedentes, hallazgos en examen físico, evolución clínica..." prefRowCount="3" wrapText="true" />
                 </VBox>
 
+                <!-- ANOTACIONES PRIVADAS Y RESERVADAS DEL MEDICO / COMENTARIOS -->
+                <VBox spacing="4.0" style="-fx-background-color: #fff1f2; -fx-border-color: #f43f5e; -fx-border-width: 1.5px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px;">
+                    <Label text="🔒 ANOTACIONES PRIVADAS Y RESERVADAS DEL MÉDICO / COMENTARIOS" style="-fx-font-size: 11px; -fx-font-weight: 900; -fx-text-fill: #be123c;" />
+                    <Label text="Confidencial: Este campo es privado para lectura médica. No se anexa en ningún informe." style="-fx-font-size: 10px; -fx-text-fill: #e11d48;" />
+                    <TextArea fx:id="txtPrivateDoctorNotes" promptText="Escribe aquí observaciones privadas, sospechas clínicas o comentarios confidenciales..." prefRowCount="3" wrapText="true" style="-fx-background-color: white; -fx-border-color: #fda4af; -fx-border-radius: 6px;" />
+                </VBox>
+
                 <!-- Diagnóstico -->
                 <VBox spacing="4.0">
                     <Label text="Diagnóstico Clínico (Dx) *" styleClass="field-label" />
